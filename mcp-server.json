@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "simple-note-reader": {
+      "command": "python",
+      "args": ["server.py"],
+      "cwd": "/Users/atif/Code/Practice/mcp-notes-analyser",
+      "env": {
+        "PYTHONPATH": "/Users/atif/Code/Practice/mcp-notes-analyser"
+      }
+    }
+  }
+} 
