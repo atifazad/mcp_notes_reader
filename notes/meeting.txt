@@ -1,0 +1,21 @@
+Team Meeting Notes - January 15, 2024
+
+Attendees: Alice, Bob, Charlie, David
+
+Agenda:
+1. Project status update
+2. Q1 goals review
+3. Resource allocation
+
+Key Decisions:
+- Move forward with the new feature development
+- Allocate 2 developers to the backend team
+- Schedule follow-up meeting for next week
+
+Action Items:
+- Alice: Prepare technical specifications
+- Bob: Review budget requirements
+- Charlie: Set up development environment
+- David: Coordinate with stakeholders
+
+Next Meeting: January 22, 2024 at 2:00 PM 

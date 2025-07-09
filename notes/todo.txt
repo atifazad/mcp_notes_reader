@@ -1,0 +1,24 @@
+TODO List - Week of January 15
+
+High Priority:
+- [ ] Review Q1 budget proposal
+- [ ] Prepare presentation for stakeholders
+- [ ] Update project documentation
+- [ ] Schedule team building event
+
+Medium Priority:
+- [ ] Organize desk and files
+- [ ] Update LinkedIn profile
+- [ ] Research new productivity tools
+- [ ] Plan weekend activities
+
+Low Priority:
+- [ ] Clean up email inbox
+- [ ] Update personal website
+- [ ] Read that book on leadership
+- [ ] Try the new coffee shop
+
+Completed:
+- [x] Submit expense reports
+- [x] Attend team meeting
+- [x] Update project timeline 
