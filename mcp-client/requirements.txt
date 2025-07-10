@@ -1,3 +1,4 @@
 mcp[cli]
 rich
-click 
+click
+ollama 
