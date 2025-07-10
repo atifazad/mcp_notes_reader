@@ -11,7 +11,7 @@ SERVER_VERSION = "1.0.0"
 
 # File System Configuration
 NOTES_FOLDER = pathlib.Path("notes")
-SUPPORTED_EXTENSIONS = [".txt"]
+SUPPORTED_EXTENSIONS = [".txt", ".pdf"]
 
 # Tool Configuration
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB limit
