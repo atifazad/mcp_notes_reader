@@ -198,6 +198,10 @@ ehthumbs.db
 ehthumbs_vista.db
 
 # Dump file
+
+# Google Calendar API credentials
+credentials.json
+token.json
 *.stackdump
 
 # Folder config file
