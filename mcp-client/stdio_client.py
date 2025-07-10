@@ -226,6 +226,56 @@ def read_note(filename):
     asyncio.run(_read_note())
 
 @cli.command()
+@click.argument('filename')
+def read_pdf(filename):
+    """Read a specific PDF file from the server."""
+    async def _read_pdf():
+        client = await run_client()
+        if client:
+            result = await client.call_tool("read_pdf", {"filename": filename})
+            client.display_result(result, "read_pdf")
+            await client.disconnect()
+    
+    asyncio.run(_read_pdf())
+
+@cli.command()
+@click.option('--max_results', default=10, help='Maximum number of events to return')
+def list_calendar_events(max_results):
+    """List upcoming events from Google Calendar."""
+    async def _list_calendar_events():
+        client = await run_client()
+        if client:
+            result = await client.call_tool("list_calendar_events", {"max_results": max_results})
+            client.display_result(result, "list_calendar_events")
+            await client.disconnect()
+    
+    asyncio.run(_list_calendar_events())
+
+@cli.command()
+@click.argument('summary')
+@click.option('--description', default='', help='Event description')
+@click.option('--start_time', default='', help='Start time in ISO format (e.g., "2024-01-15T14:00:00")')
+@click.option('--end_time', default='', help='End time in ISO format')
+@click.option('--location', default='', help='Event location')
+def create_calendar_event(summary, description, start_time, end_time, location):
+    """Create an event in Google Calendar."""
+    async def _create_calendar_event():
+        client = await run_client()
+        if client:
+            arguments = {
+                "summary": summary,
+                "description": description,
+                "start_time": start_time,
+                "end_time": end_time,
+                "location": location
+            }
+            result = await client.call_tool("create_calendar_event", arguments)
+            client.display_result(result, "create_calendar_event")
+            await client.disconnect()
+    
+    asyncio.run(_create_calendar_event())
+
+@cli.command()
 def interactive():
     """Start interactive mode."""
     async def _interactive():
@@ -246,6 +296,9 @@ def interactive():
 Available commands:
 - list_notes: List all available notes
 - read_note <filename>: Read a specific note
+- read_pdf <filename>: Read a specific PDF file
+- list_calendar_events [max_results]: List upcoming calendar events
+- create_calendar_event <summary> [options]: Create a calendar event
 - tools: Show available tools
 - quit/exit: Exit interactive mode
                     """, style="blue")
@@ -256,6 +309,24 @@ Available commands:
                     filename = command.split(' ', 1)[1]
                     result = await client.call_tool("read_note", {"filename": filename})
                     client.display_result(result, "read_note")
+                elif command.startswith('read_pdf '):
+                    filename = command.split(' ', 1)[1]
+                    result = await client.call_tool("read_pdf", {"filename": filename})
+                    client.display_result(result, "read_pdf")
+                elif command.startswith('list_calendar_events'):
+                    parts = command.split(' ')
+                    max_results = int(parts[1]) if len(parts) > 1 else 10
+                    result = await client.call_tool("list_calendar_events", {"max_results": max_results})
+                    client.display_result(result, "list_calendar_events")
+                elif command.startswith('create_calendar_event '):
+                    parts = command.split(' ', 1)
+                    if len(parts) < 2:
+                        console.print("❌ Usage: create_calendar_event <summary> [description] [start_time] [end_time] [location]", style="red")
+                        continue
+                    summary = parts[1]
+                    # For simplicity, we'll just use the summary for now
+                    result = await client.call_tool("create_calendar_event", {"summary": summary})
+                    client.display_result(result, "create_calendar_event")
                 elif command == 'tools':
                     client.display_tools()
                 else:
