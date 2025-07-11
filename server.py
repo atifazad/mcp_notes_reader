@@ -26,7 +26,8 @@ from config import (
     MAX_FILE_SIZE,
     ENCODING,
     validate_config,
-    get_supported_files
+    get_supported_files,
+    get_config_summary
 )
 from google_calendar_service import get_calendar_service
 

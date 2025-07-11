@@ -9,6 +9,10 @@ import os
 import json
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 try:
     from google.auth.transport.requests import Request
@@ -21,7 +25,7 @@ except ImportError:
     GOOGLE_CALENDAR_SUPPORT = False
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = os.getenv("GOOGLE_SCOPES", "https://www.googleapis.com/auth/calendar").split(",")
 
 class GoogleCalendarService:
     """Service for interacting with Google Calendar."""
@@ -38,8 +42,11 @@ class GoogleCalendarService:
         try:
             # The file token.json stores the user's access and refresh tokens,
             # and is created automatically when the authorization flow completes for the first time.
-            if os.path.exists('token.json'):
-                self.credentials = Credentials.from_authorized_user_file('token.json', SCOPES)
+            token_file = os.getenv("GOOGLE_TOKEN_FILE", "token.json")
+            credentials_file = os.getenv("GOOGLE_CREDENTIALS_FILE", "credentials.json")
+            
+            if os.path.exists(token_file):
+                self.credentials = Credentials.from_authorized_user_file(token_file, SCOPES)
             
             # If there are no (valid) credentials available, let the user log in.
             if not self.credentials or not self.credentials.valid:
@@ -47,16 +54,19 @@ class GoogleCalendarService:
                     self.credentials.refresh(Request())
                 else:
                     # Check if credentials file exists
-                    if not os.path.exists('credentials.json'):
+                    if not os.path.exists(credentials_file):
                         return False
                     
                     flow = InstalledAppFlow.from_client_secrets_file(
-                        'credentials.json', SCOPES)
+                        credentials_file, SCOPES)
                     self.credentials = flow.run_local_server(port=0)
                 
-                # Save the credentials for the next run
-                with open('token.json', 'w') as token:
+                # Save the credentials for the next run with proper permissions
+                with open(token_file, 'w') as token:
                     token.write(self.credentials.to_json())
+                
+                # Set secure file permissions (read/write for owner only)
+                os.chmod(token_file, 0o600)
             
             self.service = build('calendar', 'v3', credentials=self.credentials)
             return True
